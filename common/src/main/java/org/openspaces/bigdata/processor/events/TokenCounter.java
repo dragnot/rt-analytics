@@ -1,3 +1,4 @@
+package org.openspaces.bigdata.processor.events;
 /*
  * Copyright (c) 2012 GigaSpaces Technologies Ltd. All rights reserved
  *
@@ -14,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.openspaces.bigdata.processor.events;
+
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 
