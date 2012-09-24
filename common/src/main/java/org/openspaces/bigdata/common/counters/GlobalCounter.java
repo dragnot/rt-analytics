@@ -17,6 +17,9 @@ public class GlobalCounter {
 		this.token = token;
 	}
 
+	/*
+	 * this hold the count apearance of the token
+	 */
 	public Integer getCount() {
 		return count;
 	}
