@@ -67,6 +67,7 @@ public class GlobalTokenCounter {
         incrementLocalToken(counter.getToken(), counter.getCount());
     }
 
+    //TODO remove this method for usage of gigaspaces 
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, propagation = REQUIRED)
     private void incrementLocalToken(String token, Integer count) {

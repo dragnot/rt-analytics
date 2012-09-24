@@ -13,3 +13,4 @@ processor/target/
 */.project
 */.classpath
 */.settings
+.metadata/
