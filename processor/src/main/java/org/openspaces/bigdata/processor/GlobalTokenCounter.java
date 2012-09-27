@@ -16,8 +16,14 @@
 
 package org.openspaces.bigdata.processor;
 
+import java.util.logging.Logger;
+
+import javax.annotation.Resource;
+
+import org.openspaces.bigdata.common.counters.GlobalCounter;
 import org.openspaces.bigdata.processor.events.TokenCounter;
 import org.openspaces.core.GigaMap;
+import org.openspaces.core.GigaSpace;
 import org.openspaces.events.EventDriven;
 import org.openspaces.events.EventTemplate;
 import org.openspaces.events.TransactionalEvent;
@@ -26,12 +32,6 @@ import org.openspaces.events.polling.Polling;
 import org.openspaces.events.polling.ReceiveHandler;
 import org.openspaces.events.polling.receive.MultiTakeReceiveOperationHandler;
 import org.openspaces.events.polling.receive.ReceiveOperationHandler;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.logging.Logger;
-
-import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 /**
  * Polling event container polling for {@link TokenCounter} instances and updating atomic counters accordingly.
@@ -63,11 +63,20 @@ public class GlobalTokenCounter {
     }
 
     @SpaceDataEvent
-    public void eventListener(TokenCounter counter) {
-        incrementLocalToken(counter.getToken(), counter.getCount());
+    public void eventListener(TokenCounter counter,GigaSpace gigaSpace) {
+
+    	log.info("incrementing local token " +counter.getToken() + " by " + counter.getCount());
+        GlobalCounter globalCount =  gigaSpace.readById(GlobalCounter.class,counter.getToken());
+        if ( globalCount == null)
+        	globalCount = new GlobalCounter(counter.getToken(),1);
+        else
+        	globalCount.inceamentCount();
+        
+        gigaSpace.write(globalCount);
+        log.fine("+++ token=" + globalCount.getToken() + " count=" + globalCount);
     }
 
-    //TODO remove this method for usage of gigaspaces 
+/* 
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = false, propagation = REQUIRED)
     private void incrementLocalToken(String token, Integer count) {
@@ -76,5 +85,5 @@ public class GlobalTokenCounter {
         gigaMap.put(token, globalCount);
         log.fine("+++ token=" + token + " count=" + globalCount);
     }
-
+*/
 }

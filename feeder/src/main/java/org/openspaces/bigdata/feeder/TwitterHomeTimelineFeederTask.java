@@ -46,11 +46,27 @@ public class TwitterHomeTimelineFeederTask implements Runnable {
         try {
             for (Tweet publicTweet : getPublicTimeline()) {
                 logTweet(publicTweet);
+                
+            	//make sure tweets are not null and sleep if they are  
+            	if ( publicTweet == null )
+            	{
+
+					Thread.sleep(5000);
+            		log.info("No tweets sleeping ..... ");
+            		continue;
+            	}
+                logTweet(publicTweet);
+                gigaSpace.write(buildTweet(publicTweet));
+                Thread.sleep(2000);
+
                 gigaSpace.write(buildTweet(publicTweet));
             }
         } catch (DataAccessException e) {
             log.severe("error feeding tweets: " + e.getMessage());
-        }
+        } catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+        	log.severe("error feeding tweets: " + e.getMessage());
+		}
     }
 
     public SpaceDocument buildTweet(Tweet tweet) {
