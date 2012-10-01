@@ -65,7 +65,7 @@ public class GlobalTokenCounter {
     @SpaceDataEvent
     public void eventListener(TokenCounter counter,GigaSpace gigaSpace) {
 
-    	log.info("incrementing local token " +counter.getToken() + " by " + counter.getCount());
+    	log.info("Increment  local token " +counter.getToken() + " by " + counter.getCount());
         GlobalCounter globalCount =  gigaSpace.readById(GlobalCounter.class,counter.getToken());
         if ( globalCount == null)
         	globalCount = new GlobalCounter(counter.getToken(),1);

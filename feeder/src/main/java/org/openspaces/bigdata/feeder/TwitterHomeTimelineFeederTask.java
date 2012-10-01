@@ -65,7 +65,7 @@ public class TwitterHomeTimelineFeederTask implements Runnable {
             log.severe("error feeding tweets: " + e.getMessage());
         } catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-        	log.severe("error feeding tweets: " + e.getMessage());
+        	log.info("error feeding tweets: " + e.getMessage());
 		}
     }
 
